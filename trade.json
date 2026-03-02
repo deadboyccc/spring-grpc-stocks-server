@@ -1,0 +1,70 @@
+{
+  "id": "T1",
+  "symbol": "AAPL",
+  "quantity": 10,
+  "price": 175.50,
+  "type": "BUY"
+}
+{
+  "id": "T2",
+  "symbol": "GOOGL",
+  "quantity": 5,
+  "price": 140.20,
+  "type": "SELL"
+}
+{
+  "id": "T3",
+  "symbol": "MSFT",
+  "quantity": 20,
+  "price": 405.00,
+  "type": "BUY"
+}
+{
+  "id": "T4",
+  "symbol": "TSLA",
+  "quantity": 15,
+  "price": 180.30,
+  "type": "SELL"
+}
+{
+  "id": "T5",
+  "symbol": "AMZN",
+  "quantity": 8,
+  "price": 175.00,
+  "type": "BUY"
+}
+{
+  "id": "T6",
+  "symbol": "NFLX",
+  "quantity": 12,
+  "price": 605.40,
+  "type": "BUY"
+}
+{
+  "id": "T7",
+  "symbol": "NVDA",
+  "quantity": 3,
+  "price": 820.00,
+  "type": "SELL"
+}
+{
+  "id": "T8",
+  "symbol": "META",
+  "quantity": 25,
+  "price": 490.10,
+  "type": "BUY"
+}
+{
+  "id": "T9",
+  "symbol": "AMD",
+  "quantity": 30,
+  "price": 170.50,
+  "type": "SELL"
+}
+{
+  "id": "T10",
+  "symbol": "INTC",
+  "quantity": 50,
+  "price": 42.00,
+  "type": "BUY"
+}

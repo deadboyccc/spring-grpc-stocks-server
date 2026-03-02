@@ -31,6 +31,7 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
             override fun onNext(order: StockOrder) {
                 totalOrders++
                 totalAmount += order.quantity * order.price
+                println("Received order: ${order.symbol} x${order.quantity} @ ${order.price}")
             }
 
             override fun onError(t: Throwable) {
