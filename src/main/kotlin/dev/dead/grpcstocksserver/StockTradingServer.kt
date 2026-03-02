@@ -20,7 +20,7 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
         // Stream 5 updates with 3s intervals
         repeat(5) {
             responseObserver.onNext(createStockResponse(request))
-            Thread.sleep(3000)
+            Thread.sleep(2500)
         }
         responseObserver.onCompleted()
     }

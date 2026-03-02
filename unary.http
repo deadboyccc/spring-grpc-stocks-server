@@ -1,0 +1,49 @@
+### 1. DISCOVERY
+# Lists all services. Requires 'io.grpc:grpc-services' dependency.
+GRPC localhost:9090
+
+### 2. UNARY: GetPrice
+GRPC localhost:9090/stocktrading.StockTradingService/GetPrice
+
+{
+  "symbol": "AAPL"
+}
+
+### 3. SERVER STREAMING: SubscribePrice
+GRPC localhost:9090/stocktrading.StockTradingService/SubscribePrice
+
+{
+  "symbol": "TSLA"
+}
+
+### 4. CLIENT STREAMING: PlaceBulkOrder
+# You can send multiple objects in a JSON array to simulate a stream.
+GRPC localhost:9090/stocktrading.StockTradingService/PlaceBulkOrder
+
+[
+  {
+    "id": "1",
+    "symbol": "MSFT",
+    "quantity": 10,
+    "price": 400.0,
+    "type": "BUY"
+  },
+  {
+    "id": "2",
+    "symbol": "GOOG",
+    "quantity": 5,
+    "price": 150.0,
+    "type": "SELL"
+  }
+]
+
+### 5. BI-DIRECTIONAL: LiveTrade
+GRPC localhost:9090/stocktrading.StockTradingService/LiveTrade
+
+{
+  "id": "1",
+  "symbol": "AAPL",
+  "quantity": 1,
+  "price": 150.0,
+  "type": "BUY"
+}
