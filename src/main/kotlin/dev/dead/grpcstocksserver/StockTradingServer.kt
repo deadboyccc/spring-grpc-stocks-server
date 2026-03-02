@@ -1,9 +1,7 @@
 package dev.dead.grpcstocksserver
 
 import com.google.protobuf.Timestamp
-import dev.dead.StockRequest
-import dev.dead.StockResponse
-import dev.dead.StockTradingServiceGrpc
+import dev.dead.*
 import io.grpc.stub.StreamObserver
 import org.springframework.grpc.server.service.GrpcService
 import java.time.Instant
@@ -23,6 +21,31 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
             Thread.sleep(2500)
         }
         responseObserver.onCompleted()
+    }
+
+    override fun placeBulkOrder(responseObserver: StreamObserver<OrderSummary>): StreamObserver<StockOrder> {
+        return object : StreamObserver<StockOrder> {
+            private var totalOrders = 0
+            private var totalAmount = 0.0
+
+            override fun onNext(order: StockOrder) {
+                totalOrders++
+                totalAmount += order.quantity * order.price
+            }
+
+            override fun onError(t: Throwable) {
+                println("Error receiving orders: ${t.message}")
+            }
+
+            override fun onCompleted() {
+                val summary = OrderSummary.newBuilder()
+                    .setTotalValue(totalAmount)
+                    .setCount(totalOrders)
+                    .build()
+                responseObserver.onNext(summary)
+                responseObserver.onCompleted()
+            }
+        }
     }
 
     private fun createStockResponse(request: StockRequest): StockResponse {
