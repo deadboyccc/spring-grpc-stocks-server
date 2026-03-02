@@ -1,7 +1,7 @@
 import com.google.protobuf.gradle.id
 
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm") version "2.3.10"
     kotlin("plugin.spring") version "2.2.21"
     id("org.springframework.boot") version "4.0.3"
     id("io.spring.dependency-management") version "1.1.7"
@@ -14,7 +14,7 @@ description = "grpc-stocks-server"
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -42,18 +42,26 @@ dependencyManagement {
 }
 
 kotlin {
+    jvmToolchain(25)
     compilerOptions {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+    }
+}
+// FORCE JVM 25 Compatibility using the string-safe method
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        // Use fromTarget instead of the missing JVM_25 constant
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("25"))
     }
 }
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc"
+        artifact = "com.google.protobuf:protoc:4.28.2"
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.68.1"
         }
     }
     generateProtoTasks {

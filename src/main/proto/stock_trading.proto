@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package stocktrading;
+
+// Use Google's standard timestamp type
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "dev.dead";
+option java_outer_classname = "StockTradingProto";
+
+service StockTradingService {
+  // Unary: One request, one response
+  rpc GetPrice(StockRequest) returns (StockResponse);
+
+  // Server Stream: One request, continuous updates
+  rpc SubscribePrice(StockRequest) returns (stream StockResponse);
+
+  // Client Stream: Multiple orders, one summary
+  rpc PlaceBulkOrder(stream StockOrder) returns (OrderSummary);
+
+  // Bi-Directional: Real-time order execution
+  rpc LiveTrade(stream StockOrder) returns (stream TradeStatus);
+}
+
+message StockRequest {
+  string symbol = 1;
+}
+
+message StockResponse {
+  string symbol = 1;
+  double price = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message StockOrder {
+  string id = 1;
+  string symbol = 2;
+  int32 quantity = 3;
+  double price = 4;
+  OrderType type = 5; // Using an Enum for better validation
+}
+
+enum OrderType {
+  BUY = 0;
+  SELL = 1;
+}
+
+message OrderSummary {
+  int32 count = 1;
+  double total_value = 2;
+}
+
+message TradeStatus {
+  string order_id = 1;
+  string status = 2;
+  google.protobuf.Timestamp processed_at = 3;
+}
