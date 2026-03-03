@@ -25,8 +25,8 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
         responseObserver.onCompleted()
     }
 
-    override fun placeBulkOrder(responseObserver: StreamObserver<OrderSummary>): StreamObserver<StockOrder> {
-        return object : StreamObserver<StockOrder> {
+    override fun placeBulkOrder(responseObserver: StreamObserver<OrderSummary>): StreamObserver<StockOrder> =
+        object : StreamObserver<StockOrder> {
             private var totalOrders = 0
             private var totalAmount = 0.0
 
@@ -49,10 +49,10 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
                 responseObserver.onCompleted()
             }
         }
-    }
 
-    override fun liveTrade(responseObserver: StreamObserver<TradeStatus>): StreamObserver<StockOrder> {
-        return object : StreamObserver<StockOrder> {
+
+    override fun liveTrade(responseObserver: StreamObserver<TradeStatus>): StreamObserver<StockOrder> =
+        object : StreamObserver<StockOrder> {
             override fun onNext(value: StockOrder) {
                 // logging
                 println("Received order: ${value.symbol} x${value.quantity}")
@@ -84,7 +84,6 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
             }
         }
 
-    }
 
     private fun returnRandomStatus() = if (Random.nextBoolean()) "Success" else "Failure"
     private fun createStockResponse(request: StockRequest): StockResponse {
