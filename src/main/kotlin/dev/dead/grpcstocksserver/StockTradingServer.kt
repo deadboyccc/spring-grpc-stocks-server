@@ -5,6 +5,8 @@ import dev.dead.*
 import io.grpc.stub.StreamObserver
 import org.springframework.grpc.server.service.GrpcService
 import java.time.Instant
+import java.util.*
+import kotlin.random.Random
 
 @GrpcService
 class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase() {
@@ -49,6 +51,42 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
         }
     }
 
+    override fun liveTrade(responseObserver: StreamObserver<TradeStatus>): StreamObserver<StockOrder> {
+        return object : StreamObserver<StockOrder> {
+            override fun onNext(value: StockOrder) {
+                // logging
+                println("Received order: ${value.symbol} x${value.quantity}")
+
+                val now = Instant.now();
+
+                val tradeStatus = TradeStatus.newBuilder()
+                    .setOrderId(UUID.randomUUID().toString())
+                    .setStatus(returnRandomStatus())
+                    .setProcessedAt(
+                        Timestamp.newBuilder()
+                            .setSeconds(now.epochSecond)
+                            .setNanos(now.nano)
+                            .build()
+                    )
+                    .build()
+                responseObserver.onNext(tradeStatus)
+
+            }
+
+            override fun onError(t: Throwable) {
+                println("Error receiving orders: ${t.message}")
+            }
+
+            override fun onCompleted() {
+                responseObserver.onCompleted()
+
+
+            }
+        }
+
+    }
+
+    private fun returnRandomStatus() = if (Random.nextBoolean()) "Success" else "Failure"
     private fun createStockResponse(request: StockRequest): StockResponse {
         val now = Instant.now()
         return StockResponse.newBuilder()
