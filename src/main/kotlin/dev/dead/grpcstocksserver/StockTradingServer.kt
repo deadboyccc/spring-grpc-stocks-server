@@ -70,6 +70,7 @@ class StockTradingServer : StockTradingServiceGrpc.StockTradingServiceImplBase()
                     )
                     .build()
                 responseObserver.onNext(tradeStatus)
+                Thread.sleep(2500)
 
             }
 
